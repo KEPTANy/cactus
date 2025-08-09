@@ -56,6 +56,9 @@ public:
 
   std::string encode() const;
 
+  bool operator==(const Entry &) const;
+  bool operator!=(const Entry &) const;
+
 private:
   std::variant<Int, Str, List, Dict> data;
 };

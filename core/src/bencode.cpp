@@ -163,6 +163,14 @@ std::string Entry::encode() const {
   return std::visit(EncodeVisitor{}, data);
 }
 
+bool Entry::operator==(const Entry &other) const {
+  return data == other.data;
+}
+
+bool Entry::operator!=(const Entry &other) const {
+  return !(*this == other);
+}
+
 static void consume(std::string_view &s, char c, const char *err) {
   if (s.empty() || s[0] != c) {
     throw std::runtime_error(err);
