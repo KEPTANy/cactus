@@ -3,6 +3,7 @@ enable_testing()
 add_executable(
     core_test
     test_sha1.cpp
+    test_bencode.cpp
 )
 
 target_include_directories(
