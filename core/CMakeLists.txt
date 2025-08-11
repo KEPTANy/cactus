@@ -16,3 +16,5 @@ target_link_libraries(
     PRIVATE
     OpenSSL::SSL
 )
+
+add_subdirectory(test)
