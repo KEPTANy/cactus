@@ -2,7 +2,5 @@
 
 # Resources
 
-- [https://wiki.theory.org/BitTorrentSpecification](theory.org's
-BitTorrentSpecification)
-- [https://www.bittorrent.org/beps/bep_0003.html](The BitTorrent Protocol
-Specification)
+- [theory.org's BitTorrentSpecification](https://wiki.theory.org/BitTorrentSpecification)
+- [The BitTorrent Protocol Specification](https://www.bittorrent.org/beps/bep_0003.html)
