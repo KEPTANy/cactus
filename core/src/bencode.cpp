@@ -4,6 +4,8 @@
 #include <stdexcept>
 #include <variant>
 
+namespace cactus {
+
 namespace bencode {
 
 Entry::Entry() : data{0} {}
@@ -163,13 +165,9 @@ std::string Entry::encode() const {
   return std::visit(EncodeVisitor{}, data);
 }
 
-bool Entry::operator==(const Entry &other) const {
-  return data == other.data;
-}
+bool Entry::operator==(const Entry &other) const { return data == other.data; }
 
-bool Entry::operator!=(const Entry &other) const {
-  return !(*this == other);
-}
+bool Entry::operator!=(const Entry &other) const { return !(*this == other); }
 
 static void consume(std::string_view &s, char c, const char *err) {
   if (s.empty() || s[0] != c) {
@@ -309,3 +307,5 @@ Entry decode(std::string_view str) {
 }
 
 }; // namespace bencode
+
+}; // namespace cactus

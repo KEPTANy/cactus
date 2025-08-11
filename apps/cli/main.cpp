@@ -3,7 +3,7 @@
 
 #include "core/bencode.h"
 
-using namespace bencode;
+using namespace cactus::bencode;
 
 void print(Entry &val) {
   switch (val.type()) {

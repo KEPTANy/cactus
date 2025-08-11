@@ -8,6 +8,8 @@
 #include <variant>
 #include <vector>
 
+namespace cactus {
+
 namespace bencode {
 
 class Entry {
@@ -66,5 +68,7 @@ private:
 Entry decode(std::string_view);
 
 }; // namespace bencode
+
+}; // namespace cactus
 
 #endif
