@@ -17,7 +17,7 @@ TEST(SHA1, Copy) {
                             0x6a, 0xba, 0x3e, 0x25, 0x71, 0x78, 0x50,
                             0xc2, 0x6c, 0x9c, 0xd0, 0xd8, 0x9d};
 
-  cactus::SHA1 hash(x.data());
+  auto hash = cactus::SHA1::copy(x.data());
 
   EXPECT_EQ(std::memcmp(hash.begin(), x.data(), cactus::SHA1::hash_size), 0)
       << "Failed to copy initialize SHA1 hash";
@@ -28,11 +28,11 @@ TEST(SHA1, Comparisons) {
                             0x6a, 0xba, 0x3e, 0x25, 0x71, 0x78, 0x50,
                             0xc2, 0x6c, 0x9c, 0xd0, 0xd8, 0x9d};
 
-  cactus::SHA1 hash1(x.data());
+  auto hash1 = cactus::SHA1::copy(x.data());
   x[0] += 10;
-  cactus::SHA1 hash2(x.data());
+  auto hash2 = cactus::SHA1::copy(x.data());
   x[0] -= 10;
-  cactus::SHA1 hash3(x.data());
+  auto hash3 = cactus::SHA1::copy(x.data());
 
   EXPECT_TRUE(hash1 == hash3);
   EXPECT_TRUE(hash2 != hash3);
@@ -71,7 +71,8 @@ TEST(SHA1, HashComputation) {
 
   for (std::size_t i{0}; i < test_cases.size(); i++) {
     auto &[str, h] = test_cases[i];
-    EXPECT_EQ(cactus::SHA1(str.data(), str.size()), cactus::SHA1(h.data()))
+    EXPECT_EQ(cactus::SHA1::compute(str.data(), str.size()),
+              cactus::SHA1::copy(h.data()))
         << "SHA1 computation failed, test index: " << i;
   }
 }

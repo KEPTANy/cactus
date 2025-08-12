@@ -4,14 +4,19 @@
 
 namespace cactus {
 
-SHA1::SHA1(const std::uint8_t *h) { std::memcpy(sha1.data(), h, sha1.size()); }
+SHA1 SHA1::copy(const std::uint8_t *h) {
+  SHA1 res;
+  std::memcpy(res.sha1.data(), h, res.hash_size);
+  return res;
+}
 
-SHA1::SHA1(const void *start, std::size_t n) {
-  ::SHA1(static_cast<const std::uint8_t *>(start), n, sha1.data());
+SHA1 SHA1::compute(const void *start, std::size_t n) {
+  SHA1 res;
+  ::SHA1(static_cast<const std::uint8_t *>(start), n, res.sha1.data());
+  return res;
 }
 
 const std::uint8_t *SHA1::begin() const noexcept { return sha1.begin(); }
-
 const std::uint8_t *SHA1::end() const noexcept { return sha1.end(); }
 
 bool SHA1::operator==(const SHA1 &other) const noexcept {

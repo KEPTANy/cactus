@@ -12,11 +12,8 @@ class SHA1 {
 public:
   static const std::size_t hash_size = SHA_DIGEST_LENGTH;
 
-  // Copies the hash that is stored staring at provided ptr
-  SHA1(const std::uint8_t *h);
-
-  // Hashes n bytes
-  SHA1(const void *start, std::size_t n);
+  static SHA1 copy(const std::uint8_t *h);
+  static SHA1 compute(const void *start, std::size_t n);
 
   const std::uint8_t *begin() const noexcept;
   const std::uint8_t *end() const noexcept;
@@ -25,6 +22,8 @@ public:
   bool operator!=(const SHA1 &) const noexcept;
 
 private:
+  SHA1() = default;
+
   std::array<std::uint8_t, hash_size> sha1;
 };
 
