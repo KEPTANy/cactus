@@ -67,8 +67,8 @@ private:
 
 Entry decode(std::string_view);
 
-}; // namespace bencode
+} // namespace bencode
 
-}; // namespace cactus
+} // namespace cactus
 
 #endif

@@ -27,4 +27,4 @@ bool SHA1::operator!=(const SHA1 &other) const noexcept {
   return sha1 != other.sha1;
 }
 
-}; // namespace cactus
+} // namespace cactus

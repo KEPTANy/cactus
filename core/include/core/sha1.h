@@ -27,6 +27,6 @@ private:
   std::array<std::uint8_t, hash_size> sha1;
 };
 
-}; // namespace cactus
+} // namespace cactus
 
 #endif

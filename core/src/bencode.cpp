@@ -306,6 +306,6 @@ Entry decode(std::string_view str) {
   return res;
 }
 
-}; // namespace bencode
+} // namespace bencode
 
-}; // namespace cactus
+} // namespace cactus
