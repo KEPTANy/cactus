@@ -216,6 +216,10 @@ Entry decode(std::string_view str) {
         throw std::runtime_error("Invalid integer format");
       }
 
+      if (ec == std::errc::result_out_of_range) {
+        throw std::runtime_error("Integer overflow");
+      }
+
       if (str[0] == '0' && end_pos > 1) {
         throw std::runtime_error("Leading zeros are not allowed");
       }
@@ -240,6 +244,10 @@ Entry decode(std::string_view str) {
 
       if (ec != std::errc() || ptr != str.data() + colon_pos) {
         throw std::runtime_error("Invalid string length");
+      }
+
+      if (ec == std::errc::result_out_of_range) {
+        throw std::runtime_error("String size overflow");
       }
 
       if (str[0] == '0' && colon_pos > 1) {
@@ -278,10 +286,6 @@ Entry decode(std::string_view str) {
 
         if (!res.empty() && key <= prev_key) {
           throw std::runtime_error("Dictionary keys not sorted");
-        }
-
-        if (res.find(key) != res.end()) {
-          throw std::runtime_error("Dublicate dictionary keys");
         }
 
         auto val{decode()};
