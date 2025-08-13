@@ -25,8 +25,6 @@ public:
   bool operator!=(const SHA1 &) const noexcept;
 
 private:
-  SHA1() = default;
-
   std::array<std::uint8_t, hash_size> sha1;
 };
 
