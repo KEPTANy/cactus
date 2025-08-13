@@ -1,5 +1,5 @@
-#ifndef CORE_SHA1_H
-#define CORE_SHA1_H
+#ifndef CACTUS_CORE_SHA1_H
+#define CACTUS_CORE_SHA1_H
 
 #include <array>
 #include <cstdint>

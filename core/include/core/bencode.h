@@ -1,5 +1,5 @@
-#ifndef CORE_BENCODE_H
-#define CORE_BENCODE_H
+#ifndef CACTUS_CORE_BENCODE_H
+#define CACTUS_CORE_BENCODE_H
 
 #include <cstdint>
 #include <map>
