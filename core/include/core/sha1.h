@@ -25,7 +25,7 @@ public:
   bool operator!=(const SHA1 &) const noexcept;
 
 private:
-  std::array<std::uint8_t, hash_size> sha1;
+  std::array<std::uint8_t, hash_size> m_sha1;
 };
 
 } // namespace cactus

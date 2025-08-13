@@ -8,130 +8,130 @@ namespace cactus {
 
 namespace bencode {
 
-Entry::Entry() : data{0} {}
-Entry::Entry(Int x) : data{x} {}
-Entry::Entry(const Str &x) : data{x} {}
-Entry::Entry(const char *x) : data{std::string(x)} {}
-Entry::Entry(const List &x) : data{x} {}
-Entry::Entry(const Dict &x) : data{x} {}
-Entry::Entry(Str &&x) : data{std::move(x)} {}
-Entry::Entry(List &&x) : data{std::move(x)} {}
-Entry::Entry(Dict &&x) : data{std::move(x)} {}
+Entry::Entry() : m_data{0} {}
+Entry::Entry(Int x) : m_data{x} {}
+Entry::Entry(const Str &x) : m_data{x} {}
+Entry::Entry(const char *x) : m_data{std::string(x)} {}
+Entry::Entry(const List &x) : m_data{x} {}
+Entry::Entry(const Dict &x) : m_data{x} {}
+Entry::Entry(Str &&x) : m_data{std::move(x)} {}
+Entry::Entry(List &&x) : m_data{std::move(x)} {}
+Entry::Entry(Dict &&x) : m_data{std::move(x)} {}
 
 Entry &Entry::operator=(Int v) {
-  data = v;
+  m_data = v;
   return *this;
 }
 
 Entry &Entry::operator=(const Str &v) {
-  data = v;
+  m_data = v;
   return *this;
 }
 
 Entry &Entry::operator=(const char *v) {
-  data = std::string(v);
+  m_data = std::string(v);
   return *this;
 }
 
 Entry &Entry::operator=(const List &v) {
-  data = v;
+  m_data = v;
   return *this;
 }
 
 Entry &Entry::operator=(const Dict &v) {
-  data = v;
+  m_data = v;
   return *this;
 }
 
 Entry &Entry::operator=(Str &&v) {
-  data = std::move(v);
+  m_data = std::move(v);
   return *this;
 }
 
 Entry &Entry::operator=(List &&v) {
-  data = std::move(v);
+  m_data = std::move(v);
   return *this;
 }
 
 Entry &Entry::operator=(Dict &&v) {
-  data = std::move(v);
+  m_data = std::move(v);
   return *this;
 }
 
 Entry::Type Entry::type() const noexcept {
-  return static_cast<Entry::Type>(data.index());
+  return static_cast<Entry::Type>(m_data.index());
 }
 
 bool Entry::is_int() const noexcept {
-  return std::holds_alternative<Entry::Int>(data);
+  return std::holds_alternative<Entry::Int>(m_data);
 }
 
 bool Entry::is_str() const noexcept {
-  return std::holds_alternative<Entry::Str>(data);
+  return std::holds_alternative<Entry::Str>(m_data);
 }
 
 bool Entry::is_list() const noexcept {
-  return std::holds_alternative<Entry::List>(data);
+  return std::holds_alternative<Entry::List>(m_data);
 }
 
 bool Entry::is_dict() const noexcept {
-  return std::holds_alternative<Entry::Dict>(data);
+  return std::holds_alternative<Entry::Dict>(m_data);
 }
 
 Entry::Int &Entry::as_int() {
   if (!is_int()) {
     throw std::bad_variant_access{};
   }
-  return std::get<Int>(data);
+  return std::get<Int>(m_data);
 }
 
 Entry::Str &Entry::as_str() {
   if (!is_str()) {
     throw std::bad_variant_access{};
   }
-  return std::get<Str>(data);
+  return std::get<Str>(m_data);
 }
 
 Entry::List &Entry::as_list() {
   if (!is_list()) {
     throw std::bad_variant_access{};
   }
-  return std::get<List>(data);
+  return std::get<List>(m_data);
 }
 
 Entry::Dict &Entry::as_dict() {
   if (!is_dict()) {
     throw std::bad_variant_access{};
   }
-  return std::get<Dict>(data);
+  return std::get<Dict>(m_data);
 }
 
 const Entry::Int &Entry::as_int() const {
   if (!is_int()) {
     throw std::bad_variant_access{};
   }
-  return std::get<Int>(data);
+  return std::get<Int>(m_data);
 }
 
 const Entry::Str &Entry::as_str() const {
   if (!is_str()) {
     throw std::bad_variant_access{};
   }
-  return std::get<Str>(data);
+  return std::get<Str>(m_data);
 }
 
 const Entry::List &Entry::as_list() const {
   if (!is_list()) {
     throw std::bad_variant_access{};
   }
-  return std::get<List>(data);
+  return std::get<List>(m_data);
 }
 
 const Entry::Dict &Entry::as_dict() const {
   if (!is_dict()) {
     throw std::bad_variant_access{};
   }
-  return std::get<Dict>(data);
+  return std::get<Dict>(m_data);
 }
 
 std::string Entry::encode() const {
@@ -147,7 +147,7 @@ std::string Entry::encode() const {
     std::string operator()(const List &list) const {
       std::string res{"l"};
       for (const auto &e : list) {
-        res += std::visit(*this, e.data);
+        res += std::visit(*this, e.m_data);
       }
       return res + "e";
     }
@@ -156,16 +156,16 @@ std::string Entry::encode() const {
       std::string res{"d"};
       for (const auto &[key, val] : dict) {
         res += (*this)(key);
-        res += std::visit(*this, val.data);
+        res += std::visit(*this, val.m_data);
       }
       return res + "e";
     }
   };
 
-  return std::visit(EncodeVisitor{}, data);
+  return std::visit(EncodeVisitor{}, m_data);
 }
 
-bool Entry::operator==(const Entry &other) const { return data == other.data; }
+bool Entry::operator==(const Entry &other) const { return m_data == other.m_data; }
 
 bool Entry::operator!=(const Entry &other) const { return !(*this == other); }
 

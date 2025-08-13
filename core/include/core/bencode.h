@@ -62,7 +62,7 @@ public:
   bool operator!=(const Entry &) const;
 
 private:
-  std::variant<Int, Str, List, Dict> data;
+  std::variant<Int, Str, List, Dict> m_data;
 };
 
 Entry decode(std::string_view);
