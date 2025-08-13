@@ -3,6 +3,7 @@
 
 #include <array>
 #include <cstdint>
+#include <string>
 
 #include "openssl/sha.h"
 
@@ -14,6 +15,8 @@ public:
 
   static SHA1 copy(const std::uint8_t *h);
   static SHA1 compute(const void *start, std::size_t n);
+
+  std::string hex() const;
 
   const std::uint8_t *begin() const noexcept;
   const std::uint8_t *end() const noexcept;
