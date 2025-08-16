@@ -98,53 +98,82 @@ Metainfo Metainfo::parse(std::string_view encoded_metainfo, bool validate) {
   if (validate && !is_valid_metainfo(decoded)) {
     throw std::runtime_error("Provided metainfo isn't valid");
   }
-  const auto &d = decoded.as_dict();
-  const auto &d_info = d.at("info").as_dict();
 
   Metainfo res;
-
   res.m_encoded = encoded_metainfo;
+  res.m_decoded = decoded.as_dict();
 
-  std::string info_str = d.at("info").encode();
-  res.m_hash = SHA1::compute(info_str.data(), info_str.size());
+  return res;
+}
 
-  if (has(d, "created by", Entry::STR)) {
-    res.m_creator = d.at("created by").as_str();
+const std::string &Metainfo::bencoded() const noexcept { return m_encoded; }
+
+SHA1 Metainfo::info_hash() const {
+  const std::string &info_str = m_decoded.at("info").encode();
+  return SHA1::compute(info_str.data(), info_str.size());
+}
+
+std::string Metainfo::creator() const {
+  if (has(m_decoded, "created by", Entry::STR)) {
+    return m_decoded.at("created by").as_str();
   }
+  return "";
+}
 
-  if (has(d, "comment", Entry::STR)) {
-    res.m_comment = d.at("comment").as_str();
+std::string Metainfo::comment() const {
+  if (has(m_decoded, "comment", Entry::STR)) {
+    return m_decoded.at("comment").as_str();
   }
+  return "";
+}
 
-  if (has(d, "creation date", Entry::INT)) {
-    res.m_creation_time = d.at("creation date").as_int();
+std::time_t Metainfo::creation_time() const {
+  if (has(m_decoded, "creation date", Entry::INT)) {
+    return m_decoded.at("creation date").as_int();
   }
+  return 0;
+}
 
-  res.m_tracker = Tracker(d.at("announce").as_str());
+std::string Metainfo::name() const {
+  return m_decoded.at("info").as_dict().at("name").as_str();
+}
 
-  res.m_name = d_info.at("name").as_str();
+Tracker Metainfo::tracker() const {
+  return Tracker(m_decoded.at("announce").as_str());
+}
 
-  res.m_piece_size = d_info.at("piece length").as_int();
+std::size_t Metainfo::piece_size() const {
+  return m_decoded.at("info").as_dict().at("piece length").as_int();
+}
 
-  const auto &pieces_str = d_info.at("pieces").as_str();
+std::vector<SHA1> Metainfo::pieces() const {
+  const auto &pieces_str = m_decoded.at("info").as_dict().at("pieces").as_str();
   std::size_t pieces_cnt = pieces_str.size() / SHA1::hash_size;
-  res.m_pieces.resize(pieces_cnt);
+  std::vector<SHA1> res(pieces_cnt);
   for (std::size_t i = 0; i < pieces_cnt; i++) {
-    res.m_pieces[i] =
+    res[i] =
         SHA1::copy(reinterpret_cast<const std::uint8_t *>(pieces_str.data()) +
                    SHA1::hash_size * i);
   }
 
+  return res;
+}
+
+FileStorage Metainfo::storage() const {
+  const auto &d_info = m_decoded.at("info").as_dict();
+  std::string name_ = name();
+
+  FileStorage res;
   if (has(d_info, "length", Entry::INT)) { // single file
     std::size_t size = d_info.at("length").as_int();
-    res.m_storage.add_file(res.m_name, size);
+    res.add_file(name_, size);
   } else {
     const auto &files = d_info.at("files").as_list();
     for (const auto &f : files) {
       const auto &file = f.as_dict();
 
       std::size_t size = file.at("length").as_int();
-      std::string path = res.m_name;
+      std::string path = name_;
 
       const auto &path_list = file.at("path").as_list();
       for (const auto &e : path_list) {
@@ -152,26 +181,11 @@ Metainfo Metainfo::parse(std::string_view encoded_metainfo, bool validate) {
         path += e.as_str();
       }
 
-      res.m_storage.add_file(path, size);
+      res.add_file(path, size);
     }
   }
 
   return res;
 }
-
-const std::string &Metainfo::bencoded() const noexcept { return m_encoded; }
-
-const std::string &Metainfo::name() const noexcept { return m_name; }
-const std::string &Metainfo::creator() const noexcept { return m_creator; }
-const std::string &Metainfo::comment() const noexcept { return m_comment; }
-const std::time_t &Metainfo::creation_time() const noexcept {
-  return m_creation_time;
-}
-
-const SHA1 &Metainfo::info_hash() const noexcept { return m_hash; }
-const Tracker &Metainfo::tracker() const noexcept { return m_tracker; }
-std::size_t Metainfo::piece_size() const noexcept { return m_piece_size; }
-const std::vector<SHA1> &Metainfo::pieces() const noexcept { return m_pieces; }
-const FileStorage &Metainfo::storage() const noexcept { return m_storage; }
 
 } // namespace cactus

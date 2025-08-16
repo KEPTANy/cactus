@@ -7,6 +7,7 @@
 #include <string_view>
 #include <vector>
 
+#include "core/bencode.h"
 #include "core/file_storage.h"
 #include "core/sha1.h"
 #include "core/tracker.h"
@@ -23,30 +24,21 @@ public:
 
   const std::string &bencoded() const noexcept;
 
-  const std::string &creator() const noexcept;
-  const std::string &comment() const noexcept;
-  const std::time_t &creation_time() const noexcept;
+  SHA1 info_hash() const;
 
-  const SHA1 &info_hash() const noexcept;
-  const std::string &name() const noexcept;
-  const Tracker &tracker() const noexcept;
-  std::size_t piece_size() const noexcept;
-  const std::vector<SHA1> &pieces() const noexcept;
-  const FileStorage &storage() const noexcept;
+  std::string creator() const;
+  std::string comment() const;
+  std::time_t creation_time() const;
+
+  std::string name() const;
+  Tracker tracker() const;
+  std::size_t piece_size() const;
+  std::vector<SHA1> pieces() const;
+  FileStorage storage() const;
 
 private:
   std::string m_encoded;
-  SHA1 m_hash;
-
-  std::string m_creator{""};
-  std::string m_comment{""};
-  std::time_t m_creation_time{0};
-
-  Tracker m_tracker;
-  std::string m_name;
-  std::size_t m_piece_size;
-  std::vector<SHA1> m_pieces;
-  FileStorage m_storage;
+  bencode::Entry::Dict m_decoded;
 };
 
 } // namespace cactus
