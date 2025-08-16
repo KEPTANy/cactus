@@ -17,7 +17,6 @@ TEST(Metainfo, Parsing) {
                   "155a51b44b337d3b147c8d93d9764df48705ff89"));
     EXPECT_EQ(debian.tracker().url(),
               "http://bttracker.debian.org:6969/announce");
-    EXPECT_EQ(debian.name(), "debian-13.0.0-amd64-netinst.iso");
     EXPECT_EQ(debian.creator(), "mktorrent 1.1");
     EXPECT_EQ(debian.comment(), "Debian CD from cdimage.debian.org");
     EXPECT_EQ(debian.creation_time(), 1754746007);
@@ -42,7 +41,6 @@ TEST(Metainfo, Parsing) {
                   "246551a33080b1c4827d09466f22380d78a667c8"));
     EXPECT_EQ(animal_farm.tracker().url(),
               "http://bt1.archive.org:6969/announce");
-    EXPECT_EQ(animal_farm.name(), "AnimalFarmByGeorgeOrwell");
     EXPECT_EQ(animal_farm.creator(), "ia_make_torrent");
     EXPECT_EQ(animal_farm.creation_time(), 1736166308);
     EXPECT_EQ(animal_farm.piece_size(), 524288);

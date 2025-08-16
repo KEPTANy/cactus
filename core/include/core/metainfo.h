@@ -30,7 +30,6 @@ public:
   std::string comment() const;
   std::time_t creation_time() const;
 
-  std::string name() const;
   Tracker tracker() const;
   std::size_t piece_size() const;
   std::vector<SHA1> pieces() const;

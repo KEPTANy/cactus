@@ -134,10 +134,6 @@ std::time_t Metainfo::creation_time() const {
   return 0;
 }
 
-std::string Metainfo::name() const {
-  return m_decoded.at("info").as_dict().at("name").as_str();
-}
-
 Tracker Metainfo::tracker() const {
   return Tracker(m_decoded.at("announce").as_str());
 }
@@ -161,19 +157,19 @@ std::vector<SHA1> Metainfo::pieces() const {
 
 FileManager Metainfo::file_manager() const {
   const auto &d_info = m_decoded.at("info").as_dict();
-  std::string name_ = name();
+  std::string name = m_decoded.at("info").as_dict().at("name").as_str();
 
   FileManager res;
   if (has(d_info, "length", Entry::INT)) { // single file
     std::size_t size = d_info.at("length").as_int();
-    res.add_file(name_, size);
+    res.add_file(name, size);
   } else {
     const auto &files = d_info.at("files").as_list();
     for (const auto &f : files) {
       const auto &file = f.as_dict();
 
       std::size_t size = file.at("length").as_int();
-      std::string path = name_;
+      std::string path = name;
 
       const auto &path_list = file.at("path").as_list();
       for (const auto &e : path_list) {
