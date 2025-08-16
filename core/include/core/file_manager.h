@@ -18,8 +18,8 @@ public:
 
   void add_file(const std::string &fname, std::size_t size);
 
-  std::size_t total_size() const;
-  const std::vector<File> &files() const;
+  std::size_t total_size() const noexcept;
+  const std::vector<File> &files() const noexcept;
 
 private:
   std::vector<File> m_files;

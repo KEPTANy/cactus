@@ -12,7 +12,7 @@ void FileManager::add_file(const std::string &fname, std::size_t size) {
   m_total_size += size;
 }
 
-std::size_t FileManager::total_size() const { return m_total_size; }
-const std::vector<File> &FileManager::files() const { return m_files; }
+std::size_t FileManager::total_size() const noexcept { return m_total_size; }
+const std::vector<File> &FileManager::files() const noexcept { return m_files; }
 
 } // namespace cactus
