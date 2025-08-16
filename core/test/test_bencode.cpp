@@ -56,14 +56,16 @@ TEST(Bencode, ConstructString) {
   err = "Bad (const char *) operator=";
   str1 = "i could've come up with something better huh";
   EXPECT_TRUE(str1.is_str()) << err;
-  EXPECT_EQ(str1.as_str(), "i could've come up with something better huh") << err;
+  EXPECT_EQ(str1.as_str(), "i could've come up with something better huh")
+      << err;
   EXPECT_EQ(str1.type(), Entry::STR) << err;
   EXPECT_ANY_THROW(str1.as_int()) << err;
   EXPECT_ANY_THROW(str1.as_list()) << err;
   EXPECT_ANY_THROW(str1.as_dict()) << err;
   EXPECT_EQ(str1.encode(), "44:i could've come up with something better huh")
       << err;
-  EXPECT_EQ(str1, decode("44:i could've come up with something better huh")) << err;
+  EXPECT_EQ(str1, decode("44:i could've come up with something better huh"))
+      << err;
 
   err = "Bad (Str) constructor";
   std::string yet_another_str("std::string thingy");
@@ -175,14 +177,15 @@ TEST(Bencode, ConstructList) {
 
 TEST(Bencode, ConstructDict) {
   Entry dict1(Entry::Dict{{"hello", "world"},
-                       {"can i hold list", Entry::List{"sure"}}});
+                          {"can i hold list", Entry::List{"sure"}}});
   EXPECT_TRUE(dict1.is_dict()) << err;
   EXPECT_EQ(dict1.as_dict().size(), 2) << err;
   EXPECT_EQ(dict1.type(), Entry::DICT) << err;
   EXPECT_ANY_THROW(dict1.as_int()) << err;
   EXPECT_ANY_THROW(dict1.as_str()) << err;
   EXPECT_ANY_THROW(dict1.as_list()) << err;
-  EXPECT_EQ(dict1.encode(), "d15:can i hold listl4:suree5:hello5:worlde") << err;
+  EXPECT_EQ(dict1.encode(), "d15:can i hold listl4:suree5:hello5:worlde")
+      << err;
   EXPECT_EQ(dict1, decode("d15:can i hold listl4:suree5:hello5:worlde")) << err;
 
   Entry::Dict uhhh{{"1", 1},
@@ -198,7 +201,8 @@ TEST(Bencode, ConstructDict) {
   EXPECT_ANY_THROW(dict1.as_list()) << err;
   EXPECT_EQ(dict1.encode(), "d1:1i1e1:23:two1:3li3ei3ei3ee1:4d3:wow4:deepee")
       << err;
-  EXPECT_EQ(dict1, decode("d1:1i1e1:23:two1:3li3ei3ei3ee1:4d3:wow4:deepee")) << err;
+  EXPECT_EQ(dict1, decode("d1:1i1e1:23:two1:3li3ei3ei3ee1:4d3:wow4:deepee"))
+      << err;
 
   Entry dict2(Entry::Dict{});
   EXPECT_TRUE(dict2.is_dict()) << err;
@@ -230,37 +234,42 @@ TEST(Bencode, Encode) {
 
   EXPECT_EQ(Entry("").encode(), "0:");
   EXPECT_EQ(Entry("abcd").encode(), "4:abcd");
-  EXPECT_EQ(Entry(std::string(":\t\0\n\rqqq", 8)).encode(), std::string("8::\t\0\n\rqqq", 10));
+  EXPECT_EQ(Entry(std::string(":\t\0\n\rqqq", 8)).encode(),
+            std::string("8::\t\0\n\rqqq", 10));
 
   EXPECT_EQ(Entry(Entry::List{}).encode(), "le");
-  EXPECT_EQ(Entry(Entry::List{2143, "fafd", Entry::List{1, 2}, Entry::Dict{{"one", 2}}}).encode(), "li2143e4:fafdli1ei2eed3:onei2eee");
+  EXPECT_EQ(Entry(Entry::List{2143, "fafd", Entry::List{1, 2},
+                              Entry::Dict{{"one", 2}}})
+                .encode(),
+            "li2143e4:fafdli1ei2eed3:onei2eee");
 
   EXPECT_EQ(Entry(Entry::Dict{}).encode(), "de");
-  EXPECT_EQ(Entry(Entry::Dict{{"different", 1}, {"ORDER", 2}}).encode(), "d5:ORDERi2e9:differenti1ee");
+  EXPECT_EQ(Entry(Entry::Dict{{"different", 1}, {"ORDER", 2}}).encode(),
+            "d5:ORDERi2e9:differenti1ee");
 }
 
 TEST(Bencode, DecodeErrors) {
   EXPECT_ANY_THROW(decode("")) << "Can't decode empty string";
 
   EXPECT_ANY_THROW(decode("i1ei2e")) << "Non singular root item";
-  EXPECT_ANY_THROW(decode("i1e0:"))  << "Non singular root item";
-  EXPECT_ANY_THROW(decode("i1ele"))  << "Non singular root item";
-  EXPECT_ANY_THROW(decode("i1ede"))  << "Non singular root item";
+  EXPECT_ANY_THROW(decode("i1e0:")) << "Non singular root item";
+  EXPECT_ANY_THROW(decode("i1ele")) << "Non singular root item";
+  EXPECT_ANY_THROW(decode("i1ede")) << "Non singular root item";
 
   EXPECT_ANY_THROW(decode("0:i1e")) << "Non singular root item";
-  EXPECT_ANY_THROW(decode("0:0:"))  << "Non singular root item";
-  EXPECT_ANY_THROW(decode("0:le"))  << "Non singular root item";
-  EXPECT_ANY_THROW(decode("0:de"))  << "Non singular root item";
+  EXPECT_ANY_THROW(decode("0:0:")) << "Non singular root item";
+  EXPECT_ANY_THROW(decode("0:le")) << "Non singular root item";
+  EXPECT_ANY_THROW(decode("0:de")) << "Non singular root item";
 
   EXPECT_ANY_THROW(decode("lei1e")) << "Non singular root item";
-  EXPECT_ANY_THROW(decode("le0:"))  << "Non singular root item";
-  EXPECT_ANY_THROW(decode("lele"))  << "Non singular root item";
-  EXPECT_ANY_THROW(decode("lede"))  << "Non singular root item";
+  EXPECT_ANY_THROW(decode("le0:")) << "Non singular root item";
+  EXPECT_ANY_THROW(decode("lele")) << "Non singular root item";
+  EXPECT_ANY_THROW(decode("lede")) << "Non singular root item";
 
   EXPECT_ANY_THROW(decode("dei1e")) << "Non singular root item";
-  EXPECT_ANY_THROW(decode("de0:"))  << "Non singular root item";
-  EXPECT_ANY_THROW(decode("dele"))  << "Non singular root item";
-  EXPECT_ANY_THROW(decode("dede"))  << "Non singular root item";
+  EXPECT_ANY_THROW(decode("de0:")) << "Non singular root item";
+  EXPECT_ANY_THROW(decode("dele")) << "Non singular root item";
+  EXPECT_ANY_THROW(decode("dede")) << "Non singular root item";
 
   char s[] = "ie";
   for (int c = 0; c < 256; c++) {
@@ -293,6 +302,7 @@ TEST(Bencode, DecodeErrors) {
   EXPECT_ANY_THROW(decode("ddei1ee")) << "Key isn't string";
   EXPECT_ANY_THROW(decode("d1:ai1e1:ai2ee")) << "Dublicate keys";
   EXPECT_ANY_THROW(decode("d1:ai1e4:abcdle1:ai2ee")) << "Dublicate keys";
-  EXPECT_ANY_THROW(decode("d9:differenti1e5:ORDERi2ee")) << "Keys should be sorted";
+  EXPECT_ANY_THROW(decode("d9:differenti1e5:ORDERi2ee"))
+      << "Keys should be sorted";
   EXPECT_ANY_THROW(decode("d5:ORDERi2e9:differente")) << "Key with no value";
 }

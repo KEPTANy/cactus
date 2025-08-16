@@ -165,7 +165,9 @@ std::string Entry::encode() const {
   return std::visit(EncodeVisitor{}, m_data);
 }
 
-bool Entry::operator==(const Entry &other) const { return m_data == other.m_data; }
+bool Entry::operator==(const Entry &other) const {
+  return m_data == other.m_data;
+}
 
 bool Entry::operator!=(const Entry &other) const { return !(*this == other); }
 
