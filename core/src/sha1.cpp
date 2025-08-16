@@ -1,6 +1,7 @@
 #include "core/sha1.h"
 
 #include <cstring>
+#include <stdexcept>
 
 namespace cactus {
 
@@ -13,6 +14,30 @@ SHA1 SHA1::copy(const std::uint8_t *h) {
 SHA1 SHA1::compute(const void *start, std::size_t n) {
   SHA1 res;
   ::SHA1(static_cast<const std::uint8_t *>(start), n, res.m_sha1.data());
+  return res;
+}
+
+SHA1 SHA1::from_hex_string(std::string_view hex) {
+  if (hex.size() != hash_size * 2) {
+    throw std::runtime_error("Bad SHA1 hex string provided");
+  }
+
+  SHA1 res;
+  for (std::size_t i = 0; i < 2 * hash_size; i++) {
+    if (!std::isxdigit(hex[i])) {
+      std::runtime_error("Non-hex digit encountered in SHA1 string");
+    }
+
+    res.m_sha1[i / 2] <<= 4;
+
+    if ('0' <= hex[i] && hex[i] <= '9') {
+      res.m_sha1[i / 2] |= hex[i] - '0';
+    } else if ('A' <= hex[i] && hex[i] <= 'F') {
+      res.m_sha1[i / 2] |= hex[i] - 'A' + 10;
+    } else {
+      res.m_sha1[i / 2] |= hex[i] - 'a' + 10;
+    }
+  }
   return res;
 }
 
@@ -37,6 +62,5 @@ bool SHA1::operator==(const SHA1 &other) const noexcept {
 bool SHA1::operator!=(const SHA1 &other) const noexcept {
   return m_sha1 != other.m_sha1;
 }
-
 
 } // namespace cactus

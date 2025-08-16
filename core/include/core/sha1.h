@@ -15,6 +15,7 @@ public:
 
   static SHA1 copy(const std::uint8_t *h);
   static SHA1 compute(const void *start, std::size_t n);
+  static SHA1 from_hex_string(std::string_view hex);
 
   std::string hex() const;
 

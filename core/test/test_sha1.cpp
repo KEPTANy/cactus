@@ -24,6 +24,17 @@ TEST(SHA1, Copy) {
   EXPECT_EQ(hash.hex(), "a9993e364706816aba3e25717850c26c9cd0d89d");
 }
 
+TEST(SHA1, FromHex) {
+  std::array<uint8_t, 20> x{0xa9, 0x99, 0x3e, 0x36, 0x47, 0x06, 0x81,
+                            0x6a, 0xba, 0x3e, 0x25, 0x71, 0x78, 0x50,
+                            0xc2, 0x6c, 0x9c, 0xd0, 0xd8, 0x9d};
+  auto hash = cactus::SHA1::from_hex_string("a9993e364706816aba3e25717850c26c9cd0d89d");
+
+  EXPECT_EQ(std::memcmp(hash.begin(), x.data(), cactus::SHA1::hash_size), 0)
+      << "Failed to copy initialize SHA1 hash";
+  EXPECT_EQ(hash.hex(), "a9993e364706816aba3e25717850c26c9cd0d89d");
+}
+
 TEST(SHA1, Comparisons) {
   std::array<uint8_t, 20> x{0xa9, 0x99, 0x3e, 0x36, 0x47, 0x06, 0x81,
                             0x6a, 0xba, 0x3e, 0x25, 0x71, 0x78, 0x50,
@@ -47,44 +58,30 @@ TEST(SHA1, Comparisons) {
 TEST(SHA1, HashComputation) {
   // https://www.di-mgt.com.au/sha_testvectors.html
   // clang-format off
-  std::vector<std::tuple<std::string, std::array<uint8_t, 20>, std::string>> test_cases{
+  std::vector<std::tuple<std::string, std::string>> test_cases{
     {"abc",
-      {0xa9, 0x99, 0x3e, 0x36, 0x47, 0x06, 0x81, 0x6a, 0xba, 0x3e,
-       0x25, 0x71, 0x78, 0x50, 0xc2, 0x6c, 0x9c, 0xd0, 0xd8, 0x9d},
        "a9993e364706816aba3e25717850c26c9cd0d89d"},
 
     {"",
-      {0xda, 0x39, 0xa3, 0xee, 0x5e, 0x6b, 0x4b, 0x0d, 0x32, 0x55,
-       0xbf, 0xef, 0x95, 0x60, 0x18, 0x90, 0xaf, 0xd8, 0x07, 0x09},
        "da39a3ee5e6b4b0d3255bfef95601890afd80709"},
 
     {"abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq",
-      {0x84, 0x98, 0x3e, 0x44, 0x1c, 0x3b, 0xd2, 0x6e, 0xba, 0xae,
-       0x4a, 0xa1, 0xf9, 0x51, 0x29, 0xe5, 0xe5, 0x46, 0x70, 0xf1},
        "84983e441c3bd26ebaae4aa1f95129e5e54670f1"},
 
     {"abcdefghbcdefghicdefghijdefghijkefghijklfghijklmghijklmnhijklmnoijklmnopjklmnopqklmnopqrlmnopqrsmnopqrstnopqrstu",
-      {0xa4, 0x9b, 0x24, 0x46, 0xa0, 0x2c, 0x64, 0x5b, 0xf4, 0x19,
-       0xf9, 0x95, 0xb6, 0x70, 0x91, 0x25, 0x3a, 0x04, 0xa2, 0x59},
        "a49b2446a02c645bf419f995b67091253a04a259"},
 
     {std::string("a") * 1000000,
-      {0x34, 0xaa, 0x97, 0x3c, 0xd4, 0xc4, 0xda, 0xa4, 0xf6, 0x1e,
-       0xeb, 0x2b, 0xdb, 0xad, 0x27, 0x31, 0x65, 0x34, 0x01, 0x6f},
        "34aa973cd4c4daa4f61eeb2bdbad27316534016f"},
 
     {std::string("abcdefghbcdefghicdefghijdefghijkefghijklfghijklmghijklmnhijklmno") * 16777216,
-      {0x77, 0x89, 0xf0, 0xc9, 0xef, 0x7b, 0xfc, 0x40, 0xd9, 0x33,
-       0x11, 0x14, 0x3d, 0xfb, 0xe6, 0x9e, 0x20, 0x17, 0xf5, 0x92},
        "7789f0c9ef7bfc40d93311143dfbe69e2017f592"}
   };
   // clang-format on
 
   for (std::size_t i{0}; i < test_cases.size(); i++) {
-    auto &[str, h, hex] = test_cases[i];
-    cactus::SHA1 hash = cactus::SHA1::compute(str.data(), str.size());
-    EXPECT_EQ(hash, cactus::SHA1::copy(h.data()))
-        << "SHA1 computation failed, test index: " << i;
-    EXPECT_EQ(hash.hex(), hex);
+    auto &[str, hex] = test_cases[i];
+    auto hash = cactus::SHA1::compute(str.data(), str.size());
+    EXPECT_EQ(hash, cactus::SHA1::from_hex_string(hex));
   }
 }
