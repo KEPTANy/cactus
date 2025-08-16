@@ -5,7 +5,7 @@ add_library(
     src/file_manager.cpp
     src/metainfo.cpp
     src/sha1.cpp
-    src/tracker.cpp
+    src/tracker_manager.cpp
 )
 
 target_include_directories(

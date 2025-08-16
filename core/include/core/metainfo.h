@@ -10,7 +10,7 @@
 #include "core/bencode.h"
 #include "core/file_manager.h"
 #include "core/sha1.h"
-#include "core/tracker.h"
+#include "core/tracker_manager.h"
 
 namespace cactus {
 
@@ -30,7 +30,7 @@ public:
   std::string comment() const;
   std::time_t creation_time() const;
 
-  Tracker tracker() const;
+  TrackerManager tracker_manager() const;
   std::size_t piece_size() const;
   std::vector<SHA1> pieces() const;
   FileManager file_manager() const;

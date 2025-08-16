@@ -134,8 +134,11 @@ std::time_t Metainfo::creation_time() const {
   return 0;
 }
 
-Tracker Metainfo::tracker() const {
-  return Tracker(m_decoded.at("announce").as_str());
+TrackerManager Metainfo::tracker_manager() const {
+  // TODO: support announce-list
+  TrackerManager res;
+  res.add_tracker(m_decoded.at("announce").as_str());
+  return res;
 }
 
 std::size_t Metainfo::piece_size() const {
