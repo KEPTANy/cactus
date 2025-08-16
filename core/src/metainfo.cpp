@@ -159,11 +159,11 @@ std::vector<SHA1> Metainfo::pieces() const {
   return res;
 }
 
-FileStorage Metainfo::storage() const {
+FileManager Metainfo::file_manager() const {
   const auto &d_info = m_decoded.at("info").as_dict();
   std::string name_ = name();
 
-  FileStorage res;
+  FileManager res;
   if (has(d_info, "length", Entry::INT)) { // single file
     std::size_t size = d_info.at("length").as_int();
     res.add_file(name_, size);

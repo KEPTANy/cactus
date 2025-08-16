@@ -8,7 +8,7 @@
 #include <vector>
 
 #include "core/bencode.h"
-#include "core/file_storage.h"
+#include "core/file_manager.h"
 #include "core/sha1.h"
 #include "core/tracker.h"
 
@@ -34,7 +34,7 @@ public:
   Tracker tracker() const;
   std::size_t piece_size() const;
   std::vector<SHA1> pieces() const;
-  FileStorage storage() const;
+  FileManager file_manager() const;
 
 private:
   std::string m_encoded;

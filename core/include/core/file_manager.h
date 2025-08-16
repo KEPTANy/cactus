@@ -1,5 +1,5 @@
-#ifndef CACTUS_CORE_FILE_STORAGE_H
-#define CACTUS_CORE_FILE_STORAGE_H
+#ifndef CACTUS_CORE_FILE_MANAGER_H
+#define CACTUS_CORE_FILE_MANAGER_H
 
 #include <string>
 #include <vector>
@@ -12,9 +12,9 @@ struct File {
   std::size_t offset;
 };
 
-class FileStorage {
+class FileManager {
 public:
-  FileStorage() = default;
+  FileManager() = default;
 
   void add_file(const std::string &fname, std::size_t size);
 

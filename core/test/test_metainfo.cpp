@@ -22,8 +22,8 @@ TEST(Metainfo, Parsing) {
     EXPECT_EQ(debian.comment(), "Debian CD from cdimage.debian.org");
     EXPECT_EQ(debian.creation_time(), 1754746007);
     EXPECT_EQ(debian.piece_size(), 262144);
-    EXPECT_EQ(debian.storage().total_size(), 790626304);
-    const auto files = debian.storage().files();
+    EXPECT_EQ(debian.file_manager().total_size(), 790626304);
+    const auto files = debian.file_manager().files();
     std::vector<std::tuple<const char *, std::size_t, std::size_t>> expected{
         {"debian-13.0.0-amd64-netinst.iso", 790626304, 0}};
     EXPECT_EQ(files.size(), expected.size());
@@ -46,8 +46,8 @@ TEST(Metainfo, Parsing) {
     EXPECT_EQ(animal_farm.creator(), "ia_make_torrent");
     EXPECT_EQ(animal_farm.creation_time(), 1736166308);
     EXPECT_EQ(animal_farm.piece_size(), 524288);
-    EXPECT_EQ(animal_farm.storage().total_size(), 62820568);
-    const auto files = animal_farm.storage().files();
+    EXPECT_EQ(animal_farm.file_manager().total_size(), 62820568);
+    const auto files = animal_farm.file_manager().files();
     std::vector<std::tuple<const char *, std::size_t, std::size_t>> expected{
         {"AnimalFarmByGeorgeOrwell/Animal Farm by George Orwell.epub", 127971, 0},
         {"AnimalFarmByGeorgeOrwell/Animal Farm by George Orwell.mobi", 164079, 127971},
