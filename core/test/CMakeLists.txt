@@ -1,9 +1,8 @@
-enable_testing()
-
 add_executable(
     core_test
     test_sha1.cpp
     test_bencode.cpp
+    test_metainfo.cpp
 )
 
 target_include_directories(
@@ -17,6 +16,20 @@ target_link_libraries(
     PRIVATE
     core
     GTest::gtest_main
+)
+
+set(TEST_DATA_DIR "${CMAKE_CURRENT_BINARY_DIR}/test_data")
+
+add_custom_command(TARGET core_test POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+    "${CMAKE_CURRENT_SOURCE_DIR}/test_data/"
+    "${TEST_DATA_DIR}")
+enable_testing()
+
+target_compile_definitions(
+    core_test
+    PRIVATE
+    TEST_DATA_DIR="${TEST_DATA_DIR}"
 )
 
 include(GoogleTest)

@@ -2,7 +2,10 @@ add_library(
     core
     STATIC
     src/bencode.cpp
+    src/file_storage.cpp
+    src/metainfo.cpp
     src/sha1.cpp
+    src/tracker.cpp
 )
 
 target_include_directories(
