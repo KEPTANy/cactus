@@ -6,6 +6,7 @@ add_library(
     src/file_manager.cpp
     src/metainfo.cpp
     src/piece_manager.cpp
+    src/torrent.cpp
     src/tracker_manager.cpp
 )
 
