@@ -141,21 +141,19 @@ TrackerManager Metainfo::tracker_manager() const {
   return res;
 }
 
-std::size_t Metainfo::piece_size() const {
-  return m_decoded.at("info").as_dict().at("piece length").as_int();
-}
+PieceManager Metainfo::piece_manager() const {
+  std::size_t piece_size = m_decoded.at("info").as_dict().at("piece length").as_int();
 
-std::vector<SHA1> Metainfo::pieces() const {
   const auto &pieces_str = m_decoded.at("info").as_dict().at("pieces").as_str();
   std::size_t pieces_cnt = pieces_str.size() / SHA1::hash_size;
-  std::vector<SHA1> res(pieces_cnt);
+  std::vector<SHA1> pieces(pieces_cnt);
   for (std::size_t i = 0; i < pieces_cnt; i++) {
-    res[i] =
+    pieces[i] =
         SHA1::copy(reinterpret_cast<const std::uint8_t *>(pieces_str.data()) +
                    SHA1::hash_size * i);
   }
 
-  return res;
+  return PieceManager(std::move(pieces), piece_size);
 }
 
 FileManager Metainfo::file_manager() const {

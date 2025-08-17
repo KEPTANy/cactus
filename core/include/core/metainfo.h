@@ -5,10 +5,10 @@
 #include <filesystem>
 #include <string>
 #include <string_view>
-#include <vector>
 
 #include "core/bencode.h"
 #include "core/file_manager.h"
+#include "core/piece_manager.h"
 #include "core/sha1.h"
 #include "core/tracker_manager.h"
 
@@ -31,8 +31,7 @@ public:
   std::time_t creation_time() const;
 
   TrackerManager tracker_manager() const;
-  std::size_t piece_size() const;
-  std::vector<SHA1> pieces() const;
+  PieceManager piece_manager() const;
   FileManager file_manager() const;
 
 private:

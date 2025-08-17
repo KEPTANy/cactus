@@ -19,10 +19,14 @@ TEST(Metainfo, Parsing) {
     EXPECT_EQ(trackers.size(), 1);
     EXPECT_EQ(trackers[0].size(), 1);
     EXPECT_EQ(trackers[0][0].url(), "http://bttracker.debian.org:6969/announce");
+
     EXPECT_EQ(debian.creator(), "mktorrent 1.1");
     EXPECT_EQ(debian.comment(), "Debian CD from cdimage.debian.org");
     EXPECT_EQ(debian.creation_time(), 1754746007);
-    EXPECT_EQ(debian.piece_size(), 262144);
+
+    const auto pieces = debian.piece_manager();
+    EXPECT_EQ(pieces.piece_size(), 262144);
+
     EXPECT_EQ(debian.file_manager().total_size(), 790626304);
     const auto files = debian.file_manager().files();
     std::vector<std::tuple<const char *, std::size_t, std::size_t>> expected{
@@ -41,13 +45,18 @@ TEST(Metainfo, Parsing) {
     EXPECT_EQ(animal_farm.info_hash(),
               cactus::SHA1::from_hex_string(
                   "246551a33080b1c4827d09466f22380d78a667c8"));
+
     const auto trackers = animal_farm.tracker_manager().trackers();
     EXPECT_EQ(trackers.size(), 1);
     EXPECT_EQ(trackers[0].size(), 1);
     EXPECT_EQ(trackers[0][0].url(), "http://bt1.archive.org:6969/announce");
+
     EXPECT_EQ(animal_farm.creator(), "ia_make_torrent");
     EXPECT_EQ(animal_farm.creation_time(), 1736166308);
-    EXPECT_EQ(animal_farm.piece_size(), 524288);
+
+    const auto pieces = animal_farm.piece_manager();
+    EXPECT_EQ(pieces.piece_size(), 524288);
+
     EXPECT_EQ(animal_farm.file_manager().total_size(), 62820568);
     const auto files = animal_farm.file_manager().files();
     std::vector<std::tuple<const char *, std::size_t, std::size_t>> expected{
