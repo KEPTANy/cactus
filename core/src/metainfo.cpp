@@ -37,10 +37,10 @@ static bool is_valid_metainfo(const Entry &decoded_metainfo) {
 
   std::size_t piece_size = info.at("piece length").as_int();
   std::size_t pieces_cnt = info.at("pieces").as_str().size();
-  if (pieces_cnt % SHA1::hash_size != 0) {
+  if (pieces_cnt % crypto::SHA1::hash_size != 0) {
     return false;
   }
-  pieces_cnt /= SHA1::hash_size;
+  pieces_cnt /= crypto::SHA1::hash_size;
 
   std::size_t total_size = 0;
   if (has(info, "length", Entry::INT)) {
@@ -108,9 +108,9 @@ Metainfo Metainfo::parse(std::string_view encoded_metainfo, bool validate) {
 
 const std::string &Metainfo::bencoded() const noexcept { return m_encoded; }
 
-SHA1 Metainfo::info_hash() const {
+crypto::SHA1 Metainfo::info_hash() const {
   const std::string &info_str = m_decoded.at("info").encode();
-  return SHA1::compute(info_str.data(), info_str.size());
+  return crypto::SHA1::compute(info_str.data(), info_str.size());
 }
 
 std::string Metainfo::creator() const {
@@ -142,15 +142,16 @@ TrackerManager Metainfo::tracker_manager() const {
 }
 
 PieceManager Metainfo::piece_manager() const {
-  std::size_t piece_size = m_decoded.at("info").as_dict().at("piece length").as_int();
+  std::size_t piece_size =
+      m_decoded.at("info").as_dict().at("piece length").as_int();
 
   const auto &pieces_str = m_decoded.at("info").as_dict().at("pieces").as_str();
-  std::size_t pieces_cnt = pieces_str.size() / SHA1::hash_size;
-  std::vector<SHA1> pieces(pieces_cnt);
+  std::size_t pieces_cnt = pieces_str.size() / crypto::SHA1::hash_size;
+  std::vector<crypto::SHA1> pieces(pieces_cnt);
   for (std::size_t i = 0; i < pieces_cnt; i++) {
-    pieces[i] =
-        SHA1::copy(reinterpret_cast<const std::uint8_t *>(pieces_str.data()) +
-                   SHA1::hash_size * i);
+    pieces[i] = crypto::SHA1::copy(
+        reinterpret_cast<const std::uint8_t *>(pieces_str.data()) +
+        crypto::SHA1::hash_size * i);
   }
 
   return PieceManager(std::move(pieces), piece_size);

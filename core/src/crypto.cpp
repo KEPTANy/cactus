@@ -1,9 +1,11 @@
-#include "core/sha1.h"
+#include "core/crypto.h"
 
 #include <cstring>
 #include <stdexcept>
 
 namespace cactus {
+
+namespace crypto {
 
 SHA1 SHA1::copy(const std::uint8_t *h) {
   SHA1 res;
@@ -62,5 +64,7 @@ bool SHA1::operator==(const SHA1 &other) const noexcept {
 bool SHA1::operator!=(const SHA1 &other) const noexcept {
   return m_sha1 != other.m_sha1;
 }
+
+} // namespace crypto
 
 } // namespace cactus

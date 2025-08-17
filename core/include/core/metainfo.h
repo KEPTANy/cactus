@@ -7,9 +7,9 @@
 #include <string_view>
 
 #include "core/bencode.h"
+#include "core/crypto.h"
 #include "core/file_manager.h"
 #include "core/piece_manager.h"
-#include "core/sha1.h"
 #include "core/tracker_manager.h"
 
 namespace cactus {
@@ -24,7 +24,7 @@ public:
 
   const std::string &bencoded() const noexcept;
 
-  SHA1 info_hash() const;
+  crypto::SHA1 info_hash() const;
 
   std::string creator() const;
   std::string comment() const;

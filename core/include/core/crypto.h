@@ -1,5 +1,5 @@
-#ifndef CACTUS_CORE_SHA1_H
-#define CACTUS_CORE_SHA1_H
+#ifndef CACTUS_CORE_CRYPTO_H
+#define CACTUS_CORE_CRYPTO_H
 
 #include <array>
 #include <cstdint>
@@ -8,6 +8,8 @@
 #include "openssl/sha.h"
 
 namespace cactus {
+
+namespace crypto {
 
 class SHA1 {
 public:
@@ -28,6 +30,8 @@ public:
 private:
   std::array<std::uint8_t, hash_size> m_sha1;
 };
+
+} // namespace crypto
 
 } // namespace cactus
 

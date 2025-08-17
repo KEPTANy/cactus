@@ -1,7 +1,10 @@
-#include "core/sha1.h"
+#include "core/crypto.h"
 #include "gtest/gtest.h"
 
 #include <cstring>
+
+using namespace cactus;
+using namespace cactus::crypto;
 
 static std::string operator*(std::string str, std::size_t n) {
   std::string res{};
@@ -17,9 +20,9 @@ TEST(SHA1, Copy) {
                             0x6a, 0xba, 0x3e, 0x25, 0x71, 0x78, 0x50,
                             0xc2, 0x6c, 0x9c, 0xd0, 0xd8, 0x9d};
 
-  auto hash = cactus::SHA1::copy(x.data());
+  auto hash = SHA1::copy(x.data());
 
-  EXPECT_EQ(std::memcmp(hash.begin(), x.data(), cactus::SHA1::hash_size), 0)
+  EXPECT_EQ(std::memcmp(hash.begin(), x.data(), SHA1::hash_size), 0)
       << "Failed to copy initialize SHA1 hash";
   EXPECT_EQ(hash.hex(), "a9993e364706816aba3e25717850c26c9cd0d89d");
 }
@@ -28,10 +31,9 @@ TEST(SHA1, FromHex) {
   std::array<uint8_t, 20> x{0xa9, 0x99, 0x3e, 0x36, 0x47, 0x06, 0x81,
                             0x6a, 0xba, 0x3e, 0x25, 0x71, 0x78, 0x50,
                             0xc2, 0x6c, 0x9c, 0xd0, 0xd8, 0x9d};
-  auto hash =
-      cactus::SHA1::from_hex_string("a9993e364706816aba3e25717850c26c9cd0d89d");
+  auto hash = SHA1::from_hex_string("a9993e364706816aba3e25717850c26c9cd0d89d");
 
-  EXPECT_EQ(std::memcmp(hash.begin(), x.data(), cactus::SHA1::hash_size), 0)
+  EXPECT_EQ(std::memcmp(hash.begin(), x.data(), SHA1::hash_size), 0)
       << "Failed to copy initialize SHA1 hash";
   EXPECT_EQ(hash.hex(), "a9993e364706816aba3e25717850c26c9cd0d89d");
 }
@@ -41,11 +43,11 @@ TEST(SHA1, Comparisons) {
                             0x6a, 0xba, 0x3e, 0x25, 0x71, 0x78, 0x50,
                             0xc2, 0x6c, 0x9c, 0xd0, 0xd8, 0x9d};
 
-  auto hash1 = cactus::SHA1::copy(x.data());
+  auto hash1 = SHA1::copy(x.data());
   x[0] += 10;
-  auto hash2 = cactus::SHA1::copy(x.data());
+  auto hash2 = SHA1::copy(x.data());
   x[0] -= 10;
-  auto hash3 = cactus::SHA1::copy(x.data());
+  auto hash3 = SHA1::copy(x.data());
 
   EXPECT_TRUE(hash1 == hash3);
   EXPECT_TRUE(hash2 != hash3);
@@ -82,7 +84,7 @@ TEST(SHA1, HashComputation) {
 
   for (std::size_t i{0}; i < test_cases.size(); i++) {
     auto &[str, hex] = test_cases[i];
-    auto hash = cactus::SHA1::compute(str.data(), str.size());
-    EXPECT_EQ(hash, cactus::SHA1::from_hex_string(hex));
+    auto hash = SHA1::compute(str.data(), str.size());
+    EXPECT_EQ(hash, SHA1::from_hex_string(hex));
   }
 }
