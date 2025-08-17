@@ -20,4 +20,3 @@ fetchcontent_makeavailable(googletest)
 find_package(OpenSSL REQUIRED)
 
 add_subdirectory(core)
-add_subdirectory(apps/cli)
