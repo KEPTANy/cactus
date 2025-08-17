@@ -3,6 +3,7 @@ add_library(
     STATIC
     src/bencode.cpp
     src/crypto.cpp
+    src/file.cpp
     src/file_manager.cpp
     src/metainfo.cpp
     src/piece_manager.cpp

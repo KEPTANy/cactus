@@ -4,13 +4,9 @@
 #include <string>
 #include <vector>
 
-namespace cactus {
+#include "core/file.h"
 
-struct File {
-  std::string fname; // file name relative to save directory
-  std::size_t size;
-  std::size_t offset;
-};
+namespace cactus {
 
 class FileManager {
 public:

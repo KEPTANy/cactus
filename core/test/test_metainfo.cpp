@@ -37,9 +37,9 @@ TEST(Metainfo, Parsing) {
     EXPECT_EQ(files.size(), expected.size());
     for (std::size_t i = 0; i < files.size(); i++) {
       auto [exp_fname, exp_size, exp_offset] = expected[i];
-      EXPECT_EQ(files[i].fname, exp_fname);
-      EXPECT_EQ(files[i].size, exp_size);
-      EXPECT_EQ(files[i].offset, exp_offset);
+      EXPECT_EQ(files[i].rel_path(), exp_fname);
+      EXPECT_EQ(files[i].size(), exp_size);
+      EXPECT_EQ(files[i].offset(), exp_offset);
     }
   }
 
@@ -90,9 +90,9 @@ TEST(Metainfo, Parsing) {
     EXPECT_EQ(files.size(), expected.size());
     for (std::size_t i = 0; i < files.size(); i++) {
       auto [exp_fname, exp_size, exp_offset] = expected[i];
-      EXPECT_EQ(files[i].fname, exp_fname);
-      EXPECT_EQ(files[i].size, exp_size);
-      EXPECT_EQ(files[i].offset, exp_offset);
+      EXPECT_EQ(files[i].rel_path(), exp_fname);
+      EXPECT_EQ(files[i].size(), exp_size);
+      EXPECT_EQ(files[i].offset(), exp_offset);
     }
   }
 }
