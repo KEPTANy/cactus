@@ -113,6 +113,10 @@ crypto::SHA1 Metainfo::info_hash() const {
   return crypto::SHA1::compute(info_str.data(), info_str.size());
 }
 
+std::string Metainfo::name() const {
+  return m_decoded.at("info").as_dict().at("name").as_str();
+}
+
 std::string Metainfo::creator() const {
   if (has(m_decoded, "created by", Entry::STR)) {
     return m_decoded.at("created by").as_str();
@@ -159,19 +163,19 @@ PieceManager Metainfo::piece_manager() const {
 
 FileManager Metainfo::file_manager() const {
   const auto &d_info = m_decoded.at("info").as_dict();
-  std::string name = m_decoded.at("info").as_dict().at("name").as_str();
+  std::string name_ = name();
 
   FileManager res;
   if (has(d_info, "length", Entry::INT)) { // single file
     std::size_t size = d_info.at("length").as_int();
-    res.add_file(name, size);
+    res.add_file(name_, size);
   } else {
     const auto &files = d_info.at("files").as_list();
     for (const auto &f : files) {
       const auto &file = f.as_dict();
 
       std::size_t size = file.at("length").as_int();
-      std::string path = name;
+      std::string path = name_;
 
       const auto &path_list = file.at("path").as_list();
       for (const auto &e : path_list) {

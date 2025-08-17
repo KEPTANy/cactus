@@ -26,6 +26,8 @@ public:
 
   crypto::SHA1 info_hash() const;
 
+  std::string name() const;
+
   std::string creator() const;
   std::string comment() const;
   std::time_t creation_time() const;

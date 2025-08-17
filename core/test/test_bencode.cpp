@@ -4,7 +4,7 @@
 
 using namespace cactus::bencode;
 
-std::string err;
+static std::string err;
 
 TEST(Bencode, ConstructInt) {
   err = "Default constructor should initialize with 0";

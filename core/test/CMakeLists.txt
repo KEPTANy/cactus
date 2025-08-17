@@ -3,6 +3,7 @@ add_executable(
     test_sha1.cpp
     test_bencode.cpp
     test_metainfo.cpp
+    test_torrent.cpp
 )
 
 target_include_directories(

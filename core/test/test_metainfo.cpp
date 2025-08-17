@@ -4,13 +4,14 @@
 
 #include <filesystem>
 
-std::filesystem::path tests = TEST_DATA_DIR;
+static std::filesystem::path tests = TEST_DATA_DIR;
 
-const char debian_fname[] = "debian-13.0.0-amd64-netinst.iso.torrent";
-const char animal_farm_fname[] = "AnimalFarmByGeorgeOrwell_archive.torrent";
+static const char debian_fname[] = "debian-13.0.0-amd64-netinst.iso.torrent";
+static const char animal_farm_fname[] = "AnimalFarmByGeorgeOrwell_archive.torrent";
 
 using namespace cactus;
 using namespace cactus::crypto;
+
 TEST(Metainfo, Parsing) {
   {
     auto debian = Metainfo::from_file(tests / debian_fname);
@@ -26,6 +27,7 @@ TEST(Metainfo, Parsing) {
     EXPECT_EQ(debian.creator(), "mktorrent 1.1");
     EXPECT_EQ(debian.comment(), "Debian CD from cdimage.debian.org");
     EXPECT_EQ(debian.creation_time(), 1754746007);
+    EXPECT_EQ(debian.name(), "debian-13.0.0-amd64-netinst.iso");
 
     const auto pieces = debian.piece_manager();
     EXPECT_EQ(pieces.piece_size(), 262144);
@@ -56,6 +58,7 @@ TEST(Metainfo, Parsing) {
 
     EXPECT_EQ(animal_farm.creator(), "ia_make_torrent");
     EXPECT_EQ(animal_farm.creation_time(), 1736166308);
+    EXPECT_EQ(animal_farm.name(), "AnimalFarmByGeorgeOrwell");
 
     const auto pieces = animal_farm.piece_manager();
     EXPECT_EQ(pieces.piece_size(), 524288);
