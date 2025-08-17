@@ -9,6 +9,8 @@ namespace cactus {
 
 class PieceManager {
 public:
+  PieceManager() = default;
+
   PieceManager(std::vector<crypto::SHA1> &&hashes, std::size_t piece_size);
 
   const std::vector<crypto::SHA1> &hashes() const;
