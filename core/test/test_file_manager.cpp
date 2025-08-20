@@ -15,7 +15,7 @@ std::string extract_from_file(const std::filesystem::path &path) {
 }
 
 TEST(FileManager, PieceRW) {
-  cactus::Piece p1(3, 0);
+  cactus::Piece p1(3, 0, -1);
   auto &v = p1.vec();
   v[0] = 'a';
   v[1] = 'b';
@@ -31,11 +31,11 @@ TEST(FileManager, PieceRW) {
   EXPECT_EQ(extract_from_file(tests / "piece_test" / "a.txt"), "ab");
   EXPECT_EQ(extract_from_file(tests / "piece_test" / "b.txt"), "c");
 
-  cactus::Piece p2(3, 0);
+  cactus::Piece p2(3, 0, -1);
   mgr.read_piece(tests / "piece_test", p2);
   EXPECT_EQ(p1.vec(), p2.vec());
 
-  cactus::Piece p3(2, 1);
+  cactus::Piece p3(2, 1, -1);
   mgr.read_piece(tests / "piece_test", p3);
   EXPECT_EQ(p3.vec(), std::vector<std::uint8_t>({ 'b', 'c' }));
 

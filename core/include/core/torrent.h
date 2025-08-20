@@ -11,7 +11,11 @@ namespace cactus {
 class Torrent {
 public:
   static Torrent create(const std::filesystem::path &save_path,
-                        const std::filesystem::path &torrent_path);
+                        const std::filesystem::path &torrent_path,
+                        bool throw_on_name_collision = true);
+  
+  // Accounts for already downloaded pieces, returns true if all hashes match.
+  bool reverify();
 
 private:
   std::filesystem::path m_save_path;
