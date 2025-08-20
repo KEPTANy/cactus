@@ -1,8 +1,9 @@
 add_executable(
     core_test
-    test_sha1.cpp
     test_bencode.cpp
+    test_file_manager.cpp
     test_metainfo.cpp
+    test_sha1.cpp
     test_torrent.cpp
 )
 
