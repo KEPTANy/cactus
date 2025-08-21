@@ -5,6 +5,7 @@
 
 #include "core/crypto.h"
 #include "core/metainfo.h"
+#include "core/peer_id.h"
 
 namespace cactus {
 
@@ -22,6 +23,7 @@ private:
 
   Metainfo m_meta;
   crypto::SHA1 m_info_hash;
+  PeerID m_peer_id;
 
   TrackerManager m_tracker_mgr;
   PieceManager m_piece_mgr;

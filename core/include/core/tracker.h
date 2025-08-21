@@ -3,10 +3,15 @@
 
 #include <string>
 
+#include "core/crypto.h"
+#include "core/peer_id.h"
+
 namespace cactus {
 
 class Tracker {
 public:
+  enum Event { STARTED, COMPLETED, STOPPED };
+
   Tracker() = default;
   Tracker(const std::string &url);
 

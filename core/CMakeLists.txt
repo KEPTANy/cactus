@@ -6,6 +6,7 @@ add_library(
     src/file.cpp
     src/file_manager.cpp
     src/metainfo.cpp
+    src/peer_id.cpp
     src/piece.cpp
     src/piece_manager.cpp
     src/torrent.cpp
