@@ -1,22 +1,11 @@
 #ifndef CACTUS_CORE_TRACKER_MANAGER_H
 #define CACTUS_CORE_TRACKER_MANAGER_H
 
-#include <string>
 #include <vector>
 
+#include "core/tracker.h"
+
 namespace cactus {
-
-class Tracker {
-public:
-  Tracker() = default;
-  Tracker(const std::string &url);
-
-  void set_url(const std::string &url);
-  const std::string &url() const noexcept;
-
-private:
-  std::string m_url;
-};
 
 class TrackerManager {
 public:

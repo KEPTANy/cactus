@@ -9,6 +9,7 @@ add_library(
     src/piece.cpp
     src/piece_manager.cpp
     src/torrent.cpp
+    src/tracker.cpp
     src/tracker_manager.cpp
 )
 
