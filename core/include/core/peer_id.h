@@ -15,7 +15,9 @@ public:
   
   PeerID(std::string_view str);
 
-  constexpr const std::uint8_t *data() const noexcept;
+  const std::uint8_t *begin() const noexcept;
+  const std::uint8_t *end() const noexcept;
+
   constexpr std::size_t size() const noexcept;
 
 private:

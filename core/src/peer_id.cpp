@@ -20,7 +20,9 @@ PeerID::PeerID(std::string_view str) {
   std::memcpy(m_id.data(), str.data(), size());
 }
 
-constexpr const std::uint8_t *PeerID::data() const noexcept { return m_id.data(); }
+const std::uint8_t *PeerID::begin() const noexcept { return m_id.begin(); }
+const std::uint8_t *PeerID::end() const noexcept { return m_id.end(); }
+
 constexpr std::size_t PeerID::size() const noexcept { return m_id.size(); }
 
 }
