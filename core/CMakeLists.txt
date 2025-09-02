@@ -6,6 +6,7 @@ add_library(
     src/file.cpp
     src/file_manager.cpp
     src/metainfo.cpp
+    src/peer.cpp
     src/peer_id.cpp
     src/piece.cpp
     src/piece_manager.cpp
@@ -20,10 +21,17 @@ target_include_directories(
     include
 )
 
+target_include_directories(
+    core
+    PRIVATE 
+    ${asio_SOURCE_DIR}/include
+)
+
 target_link_libraries(
     core
     PRIVATE
     OpenSSL::SSL
+    cpr::cpr
 )
 
 add_subdirectory(test)
